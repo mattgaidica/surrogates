@@ -1,4 +1,3 @@
-% run from 
 % setup
 clear all % save your workspace if needed!
 workDir = pwd;
