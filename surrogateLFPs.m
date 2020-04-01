@@ -5,7 +5,7 @@ saveDir = '/Users/mattgaidica/Desktop/surrogates'; % can change if saving to har
 cd(workDir); % just go there for dependencies
 
 % load variables
-eventFieldnames = {'cueOn';'centerIn';'tone';'centerOut';'sideIn';'sideOut';'foodRetrieval'};
+% eventFieldnames = {'cueOn';'centerIn';'tone';'centerOut';'sideIn';'sideOut';'foodRetrieval'};
 if ~exist('scaloTrials')
     load('scaloTrials')
 end
