@@ -14,7 +14,7 @@ rawdataFiles = {rawdataList.name};
 
 % params
 nSessions = 30;
-nSurrogates = 10;
+nSurrogates = 1000;
 freqList = logFreqList([1 200],30);
 Wlength = 400;
 tWindow = 1;
@@ -32,7 +32,7 @@ for iSession = 1:nSessions
             trials = curateTrials(trials(trialIds),sevFilt,Fs,[]); % removes artifact trials
             fprintf('loading session %02d: %s\n',iSession,rawdataFiles{iSession});
         end
-        fprintf('processing session %02d, surrogate %05d\n',iSession,iSurr);
+        fprintf('processing session %02d, surrogate %05d',iSession,iSurr);
         if iSurr == 0 % real data, no shift
             [trials_surr,rShift] = shiftTimestamps(trials,0);
         else % shifted data
@@ -42,8 +42,8 @@ for iSession = 1:nSessions
         tic;
         [W,all_data] = eventsLFPv2(trials_surr,sevFilt,tWindow,Fs,freqList,{'centerIn'});
         % resize peri-event data, squeeze single event, toss out complex
-        W = real(squeeze(W(:,round(linspace(size(W,1),size(W,2),Wlength)),:,:)));
-        disp(toc);
+        W = abs(squeeze(W(:,round(linspace(size(W,1),size(W,2),Wlength)),:,:))).^2;
+        fprintf(' %1.2fs\n',toc);
         save(fullfile(saveDir,'scalograms',sprintf('%02d_%05d',iSession,iSurr)),'W','rShift','-v7.3');
     end
     clear sevFilt; % done with session
