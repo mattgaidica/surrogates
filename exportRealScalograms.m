@@ -1,6 +1,17 @@
+workDir = pwd;
 saveDir = '/Users/mattgaidica/Desktop/surrogates';
+
 nSessions = 30;
+tWindow = 1;
+Wlength = 400;
+freqList = logFreqList([1 200],30);
 eventFieldnames = {'cueOn';'centerIn';'tone';'centerOut';'sideIn';'sideOut';'foodRetrieval'};
+
+if ~exist('scaloTrials')
+    load('scaloTrials')
+end
+rawdataList = dir(fullfile(workDir,'rawdata','session*.sev.mat'));
+rawdataFiles = {rawdataList.name};
 
 for iSession = 1:nSessions
     load(fullfile(workDir,'rawdata',rawdataFiles{iSession})); % loads sevFilt, Fs, decimateFactor

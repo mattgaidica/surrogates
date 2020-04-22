@@ -1,6 +1,6 @@
 function [trials,trialsMap] = curateTrials(trials,sevFilt,Fs,eventName)
 % passing in only successful trials
-trialTimeRanges = getTrialTimes(trials);
+trialTimeRanges = getTrialTimes(trials,1);
 minTime = min(trialTimeRanges(:,1));
 maxTime = max(trialTimeRanges(:,2));
 
@@ -62,13 +62,13 @@ end
 
 end
 
-function trialTimeRanges = getTrialTimes(trials)
+function trialTimeRanges = getTrialTimes(trials,windowSec)
 trialTimeRanges = NaN(numel(trials),2);
 for iTrial = 1:numel(trials)
     if isfield(trials(iTrial).timestamps,'cueOn')
-        trialTimeRanges(iTrial,1) = getfield(trials(iTrial).timestamps,'cueOn');
+        trialTimeRanges(iTrial,1) = getfield(trials(iTrial).timestamps,'cueOn') - windowSec;
         if isfield(trials(iTrial).timestamps,'foodRetrieval')
-            trialTimeRanges(iTrial,2) = getfield(trials(iTrial).timestamps,'foodRetrieval');
+            trialTimeRanges(iTrial,2) = getfield(trials(iTrial).timestamps,'foodRetrieval') + windowSec;
         end
     end
 end
