@@ -7,7 +7,7 @@ freqList = logFreqList([1 200],30);
 Wlength = 400;
 
 zscoreSessions = zeros(nSessions,numel(eventFieldnames),Wlength,numel(freqList));
-for iFreq = 1:numel(freqList)
+for iFreq = 18%:numel(freqList)
     for iSession = 1:nSessions
         freqSurr = zeros(nSurrogates,Wlength);
         for iSurr = 0:nSurrogates
@@ -20,12 +20,12 @@ for iFreq = 1:numel(freqList)
                 Wfreq = matobj.W(:,:,:,iFreq); % for later
             else
                 thisPower = mean(matobj.W(:,:,iFreq),2);
-                freqSurr(iSurr,:) = mean(matobj.W(:,:,iFreq),2);
+                freqSurr(iSurr,:) = thisPower;
             end
         end
         for iEvent = 1:numel(eventFieldnames)
             realData = mean(squeeze(Wfreq(iEvent,:,:)),2);
-            zscoreSessions(iSession,iEvent,:,iFreq) = (realData - mean(freqSurr)') ./ std(freqSurr)';
+            zscoreSessions(iSession,iEvent,:,iFreq) = (realData - mean(mean(freqSurr))) ./ std(mean(freqSurr));
         end
     end
 end
